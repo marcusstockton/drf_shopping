@@ -1,8 +1,7 @@
 from .models import Item
 from reviews.models import Review
-from reviews.serializers import ReviewSerializer
 from rest_framework import viewsets
-from rest_framework.decorators import action, list_route
+from rest_framework.decorators import action
 from .serializers import ItemSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -19,8 +18,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def reviews(self, request, pk=None):
         serializer_context = {
-            'request': request,
-        }
+    'request': Request(request),
+}
+        #breakpoint()
         queryset = Review.objects.filter(item=pk)
-        serializer = ReviewSerializer(instance=queryset, many=True, context=serializer_context)
+        serializer = ItemSerializer(instance=queryset, many=True)
         return Response(serializer.data)
