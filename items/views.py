@@ -1,12 +1,15 @@
 from .models import Item
 from reviews.models import Review
 from reviews.serializers import ReviewSerializer
+
+from attachments.models import Attachment
+from attachments.serializers import AttachmentSerializer
+
 from rest_framework import viewsets
 from rest_framework.decorators import action, detail_route
 from .serializers import ItemSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
-
 
 
 class ItemViewSet(viewsets.ModelViewSet):
@@ -16,8 +19,8 @@ class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
-    # @action(detail=True, methods=['get'])
-    @detail_route(methods=['get'])
+    # @detail_route(methods=['get', 'post'])
+    @action(detail=True, methods=['get', 'post'], serializer_class=ReviewSerializer)
     def reviews(self, request, pk=None):
         serializer_context = {
             'request': request,
@@ -25,3 +28,15 @@ class ItemViewSet(viewsets.ModelViewSet):
         queryset = Review.objects.filter(item=pk)
         serializer = ReviewSerializer(instance=queryset, many=True, context=serializer_context)
         return Response(serializer.data)
+
+    # @detail_route(methods=['get', 'post'])
+    @action(detail=True, methods=['get', 'post'], serializer_class=AttachmentSerializer)
+    def attachments(self, request, pk=None):
+        serializer_context = {
+            'request': request,
+        }
+        queryset = Attachment.objects.filter(item=pk)
+        serializer = AttachmentSerializer(instance=queryset, many=True, context=serializer_context)
+        return Response(serializer.data)
+    
+

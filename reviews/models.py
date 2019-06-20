@@ -6,11 +6,11 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class Review(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=250)
     description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.IntegerField(default=0, validators=[MaxValueValidator(10), MinValueValidator(0)])
+    rating = models.IntegerField(default=0, validators=[MaxValueValidator(5), MinValueValidator(0)])
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='reviews')
 
     def __repr__(self):

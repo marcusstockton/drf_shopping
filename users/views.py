@@ -2,11 +2,9 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import UserSerializer, GroupSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticatedOrReadOnly,)
     """
     API endpoint that allows users to be viewed or edited.
     """

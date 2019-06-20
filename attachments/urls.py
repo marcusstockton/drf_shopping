@@ -5,5 +5,5 @@ from rest_framework import routers
 from . import views
 
 routeList = (
-    (r'attachments', views.AttachmentViewSet),
+    (r'attachments', views.AttachmentModelViewSet),
 )

@@ -22,7 +22,7 @@ from attachments import urls as attachmentUrls
 from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static
-
+from attachments.views import AttachmentViewSet
 
 routeLists = [
     itemUrls.routeList,
@@ -35,6 +35,8 @@ router = routers.DefaultRouter()
 for routeList in routeLists:
     for route in routeList:
         router.register(route[0], route[1])
+
+#router.register(r'attachmentVS', AttachmentViewSet, basename='attachment')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
