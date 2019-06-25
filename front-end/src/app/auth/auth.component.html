@@ -1,0 +1,15 @@
+<form [formGroup]="authForm" (ngSubmit)="handleSubmit(authForm.value, authForm.valid)">
+  <label>
+    Username:
+    <input type="text" formControlName="username">
+  </label>
+  <label>
+    Password:
+    <input type="password" formControlName="password">
+  </label>
+  <button type="submit" [disabled]="!authForm.valid">Submit</button>
+</form>
+
+<span *ngFor="let error of errorList" class="text-danger">
+  {{error}}
+</span>
