@@ -1,0 +1,49 @@
+<!-- <form (ngSubmit)="handleSubmit(form.value, form.valid)" #form="ngForm" novalidate>
+  <div>
+    Item Title:
+    <input type="text" name="title" required #title="ngModel" [ngModel]="detail?.title">
+    <div *ngIf="title.errors?.required && fullname.dirty" class="error">
+      A Title is required
+    </div>
+  </div>
+  <div>
+    Description:
+    <input type="text" name="description" required #id="ngModel" [ngModel]="detail?.description">
+    <div *ngIf="description.errors?.required && description.dirty" class="error">
+      A description is required
+    </div>
+  </div>
+  <div>
+    Price:
+    <input type="number" name="price" required #id="ngModel" [ngModel]="detail?.price">
+    <div *ngIf="price.errors?.required && price.dirty" class="error">
+      A price is required
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">
+    Update Item
+  </button>
+
+</form> -->
+
+<form [formGroup]="itemForm" (ngSubmit)="handleSubmit(itemForm.value, itemForm.valid)">
+  <input type="hidden" formControlName="id">
+  <label>
+    Title:
+    <input type="text" formControlName="title">
+  </label>
+
+  <label>
+    Description:
+    <input type="text" formControlName="description">
+  </label>
+
+  <label>
+    Price:
+    <input type="number" formControlName="price">
+  </label>
+
+
+  <button type="submit" [disabled]="!itemForm.valid">Submit</button>
+</form>

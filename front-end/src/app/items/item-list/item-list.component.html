@@ -1,0 +1,22 @@
+<div class="card-deck">
+  <div *ngFor="let item of itemList">
+    <div class="card" style="width: 18rem;">
+      <ngb-carousel *ngIf="item.attachments">
+        <span *ngFor="let image of item.attachments">
+          <ng-template ngbSlide>
+            <img class="card-img-top img-fluid" src="data:image/jpeg;base64,{{image.base64_image}}" style="width:640px;height:360px" alt="{{image.image}}">
+          </ng-template>
+        </span>
+      </ngb-carousel>
+      <div class="card-body">
+        <b class="card-title">ID: {{item.id }}</b>
+        <h5 class="card-title">{{item.title}}</h5>
+        <p class="card-text">{{item.description}}</p>
+        <p class="card-text">{{item.price | currency: '£'}}</p>
+        <p class="card-text">{{item.created_date | date:'medium'}}</p>
+        <p class="card-text"> No Of Reviews: {{item.reviews.length}}</p>
+        <a [routerLink]="['/', item.id]">Details</a>
+      </div>
+    </div>
+  </div>
+</div>
