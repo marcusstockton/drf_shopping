@@ -6,21 +6,22 @@ from attachments.models import Attachment
 from attachments.serializers import AttachmentSerializer
 
 from rest_framework import viewsets, status
-from rest_framework.decorators import action, detail_route
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.decorators import action
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from .serializers import ItemSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-# curl -XPUT -H "Authorization: Token 049302cdb486c60001ea22969edee3f54ab4481b" -H "Content-Type: application/json" -d "{"title":"An updated third Item","description":"Some sales guff","price":"142.56","created_date":"2019-06-17T09:45:26.086009Z"}" "http://127.0.0.1:8000/items/5/"
+# curl -X PUT -H "Authorization: Token 049302cdb486c60001ea22969edee3f54ab4481b" -H "Content-Type: application/json" -d "{"title":"An updated third Item","description":"Some sales guff","price":"142.56","created_date":"2019-06-17T09:45:26.086009Z"}" "http://127.0.0.1:8000/items/5/"
 class ItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows items to be viewed or edited.
     """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
-
+    # authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -33,6 +34,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
+        permission_classes = (IsAuthenticated,)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -45,6 +47,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
+        permission_classes = (IsAuthenticated,)
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -53,10 +56,12 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
+        permission_classes = (IsAuthenticated,)
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
+        permission_classes = (IsAuthenticated,)
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
   private currentUserSubject: BehaviorSubject<string>;
-  private baseURL = environment.apiBaseURL + 'api-token-auth/';
+  private baseURL = environment.apiBaseURL + 'api/token/';
   constructor(private httpClient: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<string>(localStorage.getItem('id_token'));
   }
@@ -18,7 +18,10 @@ export class AuthService {
     return this.httpClient.post<any>(`${this.baseURL}`, login)
       .pipe(
         tap( // Log the result or error
-           data => this.setCookie(data.token)
+           data => {
+            this.setCookie(data.access);
+            this.currentUserSubject.next(data.access);
+           }
           // error => console.log(error)
         )
       );
@@ -29,11 +32,12 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return this.currentUserValue !== '';
+    return this.currentUserValue && this.currentUserValue !== '';
   }
 
   logout() {
     localStorage.removeItem('id_token');
+    this.currentUserSubject.next(null);
   }
 
   private setCookie(token: string)  {

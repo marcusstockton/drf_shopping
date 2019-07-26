@@ -28,11 +28,9 @@ export class AuthComponent implements OnInit {
       this.errorList = [];
       // Submit the form
       this.service.login(this.authForm.value).subscribe((result) => {
-        this.router.navigateByUrl('/');
+        this.router.navigate(['/']);
       }, (error) => {
-        error.error.non_field_errors.forEach(element => {
-          this.errorList.push(element);
-        });
+        this.errorList.push(error.error.detail);
       });
     }
   }
