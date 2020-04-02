@@ -31,7 +31,7 @@ export class ItemDetailComponent implements OnInit {
   onUpdateItem(event: Item) {
     this.service.updateItem(event)
       .subscribe((data: Item) => {
-        this.item = Object.assign({}, this.item, event), 
+        this.item = Object.assign({}, this.item, event),
         this.edit();
       }, ((error: any) => {
         console.log(error);
